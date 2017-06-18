@@ -144,11 +144,13 @@ Creates a buffer if necessary."
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 ;helm
+(el-get-bundle! helm)
 (require 'helm-config)
 (helm-mode 1)
 (define-key global-map (kbd "M-x") 'helm-M-x)
 (define-key global-map (kbd "C-x C-f") 'helm-find-files)
 ;;key-chord
+(el-get-bundle! key-chord)
 (require 'key-chord)
 (key-chord-mode 1)
 ;; キーを押した際にどこまでの間隔を許容するか
@@ -157,6 +159,7 @@ Creates a buffer if necessary."
 (key-chord-define-global "fk" 'helm-for-files)
 (key-chord-define-global "fj" 'helm-M-x)
 ;;git grep
+(el-get-bundle! helm-git-grep)
 (require 'helm-git-grep) ;; Not necessary if installed by package.el
 (global-set-key (kbd "C-c g") 'helm-git-grep)
 ;; Invoke `helm-git-grep' from isearch.
