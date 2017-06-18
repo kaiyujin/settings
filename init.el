@@ -170,3 +170,14 @@ Creates a buffer if necessary."
 ;;tramp-mode
 (require 'tramp)
 (setq tramp-default-method "ssh")
+;;jedi
+(el-get-bundle! jedi)
+(require 'jedi)
+(setq py-python-command "/usr/local/bin/python3")
+(add-hook 'python-mode-hook
+          '(lambda()
+             (jedi:ac-setup)
+             (setq jedi:complete-on-dot t)
+             (local-set-key (kbd "M-SPC") 'jedi:complete)))
+(when (eq system-type 'darwin)
+  (setq ns-command-modifier (quote meta)))
