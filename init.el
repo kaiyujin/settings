@@ -180,7 +180,11 @@ Creates a buffer if necessary."
 (el-get-bundle! jedi)
 (require 'jedi)
 ;;python
-(setq py-python-command "/usr/local/bin/python3")
+(setq py-python-command "python3")
+(defcustom python-shell-interpreter "python3"
+  "Default Python interpreter for shell."
+  :type 'string
+  :group 'python)
 (add-hook 'python-mode-hook
           '(lambda()
              (jedi:ac-setup)
