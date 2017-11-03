@@ -4,17 +4,23 @@
 (require 'el-get)
 ;; el-getでダウンロードしたパッケージは ~/.emacs.d/ に入るようにする
 (setq el-get-dir (locate-user-emacs-file "lisp"))
-;go
+;;go
 (el-get-bundle! go-mode)
 (el-get-bundle! go-autocomplete)
 (el-get-bundle! go-eldoc)
-(setenv "GOPATH" "/Users/shiraishidaisuke/tools/gopath")
-(add-to-list 'exec-path (expand-file-name "~/tools/gopath/bin"))
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize)
+  (exec-path-from-shell-copy-env "GOPATH"))
 (add-hook 'go-mode-hook (lambda ()
-			  (setq gofmt-command "goimports")
-			  (setq tab-width 2)
-			  (add-hook 'before-save-hook 'gofmt-before-save)))
+                          (setq gofmt-command "goimports")
+                          (setq tab-width 2)
+                          (local-set-key (kbd "M-p") 'compile)
+                          (local-set-key (kbd "M-.") 'godef-jump)
+                          (local-set-key (kbd "C-c d") 'godoc)
+                          (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
+                          (add-hook 'before-save-hook 'gofmt-before-save)))
 (require 'go-autocomplete)
+
 
 ;;行番号
 (require 'linum)
@@ -173,11 +179,29 @@ Creates a buffer if necessary."
 ;;jedi
 (el-get-bundle! jedi)
 (require 'jedi)
+;;python
 (setq py-python-command "/usr/local/bin/python3")
 (add-hook 'python-mode-hook
           '(lambda()
              (jedi:ac-setup)
              (setq jedi:complete-on-dot t)
-             (local-set-key (kbd "M-SPC") 'jedi:complete)))
-(when (eq system-type 'darwin)
-  (setq ns-command-modifier (quote meta)))
+             (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
+             (when (eq system-type 'darwin)
+               (setq ns-command-modifier (quote meta)))
+             (setq-default indent-tabs-mode nil)
+             (el-get-bundle! py-autopep8)
+             (setq py-autopep8-options '("--max-line-length=80"))
+             (setq flycheck-flake8-maximum-line-length 80)
+             (py-autopep8-enable-on-save)))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages (quote (exec-path-from-shell go-mode))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
