@@ -1,3 +1,4 @@
+(prefer-coding-system 'utf-8)
 (setq load-path (cons (expand-file-name "~/.emacs.d/lisp") load-path))
 ;; el-get
 (add-to-list 'load-path (locate-user-emacs-file "el-get"))
